@@ -2,6 +2,7 @@ package test.classes;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +16,6 @@ public class Test {
         File file = new File(path);
 
         Properties prop = new Properties();
-        logProperties(prop);
         prop.load(new FileReader(file));
         logProperties(prop);
         List<String> classNames = new ArrayList<>();

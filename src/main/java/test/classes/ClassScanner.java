@@ -3,38 +3,40 @@ package test.classes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ClassScanner {
 
-        public static List<String> getClassNames(String path) {
+    public static List<String> getClassNames(String path) {
+
         List<String> classNames = new ArrayList<>();
-        final File dir = new File(path);
 
-        File[] dirFiles = dir.listFiles();
-
-        for (final File entry : dirFiles) {
-            //if entry is directory -> recursion
-            if (entry.isDirectory()) {
-
-                classNames.addAll(getClassNames(entry.getPath()));
-
-            } else if (entry.getPath().endsWith(".jar")) {
-                //if entry is a jar-file
-                classNames.addAll(getClassNamesFromJar(entry.getPath()));
-
+        class LocalFileVisitor extends SimpleFileVisitor<Path> {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                classNames.addAll(ClassScanner.getClassNamesFromJar(file.toString()));
+                return FileVisitResult.CONTINUE;
             }
         }
 
+
+        try{
+            Files.walkFileTree(Paths.get(path), new LocalFileVisitor());
+        } catch (IOException ioe) {
+            // TODO add logger
+        }
 
         return classNames;
     }
 
     /**
-     * method fill classNames with the list of all Java classes contained inside a jar file at {@param pathToJar}
+     * method finds all Java classes contained inside a jar-file at {@param pathToJar} and returns a list of them
      * @param pathToJar path to the jar-file int the format "/yourPathToJar/yourJar.jar"
      * @return list of all Java classes contained inside a jar file
      */
