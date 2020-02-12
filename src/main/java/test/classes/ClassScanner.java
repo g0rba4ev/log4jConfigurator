@@ -60,7 +60,7 @@ public class ClassScanner {
             for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
                 if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
                     // This ZipEntry represents a class. Convert path to this class to full class name:
-                    String className = entry.getName().replace(File.separatorChar, '.'); // including ".class"
+                    String className = entry.getName().replace('/', '.'); // including ".class"
                     classNames.add(className.substring(0, className.length() - ".class".length()));
                 }
             }

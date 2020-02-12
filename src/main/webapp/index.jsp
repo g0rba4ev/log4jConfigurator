@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="jquery-ui.css">
     <script  type="text/javascript" src="js/jquery.js"></script>
     <script  type="text/javascript" src="js/jquery-ui.js"></script>
-
     <script  type="text/javascript" src="js/main.js"></script>
   </head>
 
@@ -15,7 +14,7 @@
         <button>Add new logger</button> OR
       <div>
         <input id="className" placeholder="Enter logger name (for example, &quot;your.existing.logger.className&quot;">
-        <input id="EditButton" class="button" type="submit" value="Edit" width="40px">
+        <input id="EditButton" type="button" value="Edit" onclick="showLogger($('#className').val())">
       </div>
     </div>
 
