@@ -47,7 +47,14 @@ function addTableByObject(tables, object) {
     //create the head of the table by clicking on which the table will appear
     let tableHead = document.createElement('div');
     tableHead.classList.add('collapsible');
-    tableHead.innerText = getFirstProperty(object); // get logger OR appender name
+    let firstKey = Object.keys(object)[0];
+    if(firstKey === "LoggerName"){
+        tableHead.innerText = "Logger: " + object["LoggerName"]; // logger name
+    } else if (firstKey === "Error") {
+        tableHead.innerText = "Error: " + object["Error"]; // error
+    } else {
+        tableHead.innerText = "Appender: " + firstKey; // appender name
+    }
     //add event listener to show/hide table bu click to tableHead div
     tableHead.addEventListener('click', function(){
         this.classList.toggle('active');
@@ -77,16 +84,4 @@ function addTableByObject(tables, object) {
     }
     tables.append(tableHead);
     tables.append(table);
-}
-
-
-/**
- * function for getting first property in object
- * @param object
- * @returns {*} first property in object
- */
-function getFirstProperty(object) {
-    for (let i in object) {
-        return object[i];
-    }
 }
