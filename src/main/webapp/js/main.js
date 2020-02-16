@@ -44,8 +44,23 @@ function renderByJSON(JSON){
  * @param object object from json to be converted to table
  */
 function addTableByObject(tables, object) {
+    //create the head of the table by clicking on which the table will appear
+    let tableHead = document.createElement('div');
+    tableHead.classList.add('collapsible');
+    tableHead.innerText = getFirstProperty(object); // get logger OR appender name
+    //add event listener to show/hide table bu click to tableHead div
+    tableHead.addEventListener('click', function(){
+        this.classList.toggle('active');
+        let content = this.nextElementSibling;
+        if(content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    })
+    // create table
     let table = document.createElement('div');
-    table.classList.add('tableGrid'); // display: grid
+    table.classList.add('tableGrid', 'content'); // display: grid
     for (let key in object) {
         let c1 = document.createElement("input"); // c = column
         c1.readOnly = true;
@@ -60,5 +75,18 @@ function addTableByObject(tables, object) {
         c4.setAttribute("value", "UPDATE");
         table.append(c1, c2, c3, c4);
     }
+    tables.append(tableHead);
     tables.append(table);
+}
+
+
+/**
+ * function for getting first property in object
+ * @param object
+ * @returns {*} first property in object
+ */
+function getFirstProperty(object) {
+    for (let i in object) {
+        return object[i];
+    }
 }
