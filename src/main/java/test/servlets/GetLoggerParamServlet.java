@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 @WebServlet("/getLoggerParam")
@@ -40,8 +41,8 @@ public class GetLoggerParamServlet extends HttpServlet {
         Properties log4jProp = readLog4jProperties(pathToLog4jProperties);
 
         // fields ends with "Key" is a keys for properties in log4j.properties
-        String loggerKey = "log4j.logger." + loggerName;
-        String additivityKey = "log4j.additivity." + loggerName;
+        final String loggerKey = "log4j.logger." + loggerName;
+        final String additivityKey = "log4j.additivity." + loggerName;
 
         //check - is exist a logger with that name
         String temp = log4jProp.getProperty(loggerKey);
@@ -49,11 +50,11 @@ public class GetLoggerParamServlet extends HttpServlet {
             //TODO replace with json that'll be placed in the table on site
             return "[{\"Error\": \"Logger is not registered\"}]";
         }
-        // the field logInfoStr contains the level of the logger and the list of applications comma-separated
+        // the field logInfoStr contains the level of the logger and the list of appenders comma-separated
         String logInfoStr = temp.replaceAll(" ", "");
         String[] logInfoArr = logInfoStr.split(",");
         String[] appendersArr = Arrays.copyOfRange(logInfoArr, 1, logInfoArr.length);
-        //get logger additivity and check - is it empty (default)
+        //get logger additivity and check - is it empty (default additivity is true)
         String additivity = log4jProp.getProperty(additivityKey);
         if (additivity == null)
             additivity = "true (default)";
@@ -77,10 +78,9 @@ public class GetLoggerParamServlet extends HttpServlet {
         for (String appenderName : appendersArr){
             ObjectNode appenderNode = mapper.createObjectNode();
             String appenderKey = "log4j.appender." + appenderName;
+            appenderNode.put(appenderName, log4jProp.getProperty(appenderKey));
             for(String s : log4jProp.stringPropertyNames()) {
-                if(s.equals(appenderKey)){
-                    appenderNode.put(appenderName, log4jProp.getProperty(s));
-                }else if(s.contains(appenderKey)){
+                if(s.contains(appenderKey) && !(s.equals(appenderKey))){
                     appenderNode.put(s.replace(appenderKey+".", ""), log4jProp.getProperty(s));
                 }
             }

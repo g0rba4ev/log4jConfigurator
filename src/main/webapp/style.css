@@ -1,6 +1,6 @@
 BODY {
     margin: 5px;
-    background: #888;
+    background: #303030;
 }
 .boldBorder {
     outline: 2px solid #444; /* Чёрная рамка */
@@ -13,7 +13,7 @@ BODY {
     text-align: center;
 }
 .collapsible {
-    background-color: #555;
+    background-color: #202020;
     color: white;
     cursor: pointer;
     padding: 5px;
@@ -21,9 +21,8 @@ BODY {
 }
 .active,
 .collapsible:hover {
-    background-color: #444;
+    background-color: #38444c;
 }
-
 .content {
     max-height: 0;
     overflow: hidden;
@@ -34,4 +33,3 @@ BODY {
     display: grid;
     grid-template-columns: 1fr 80px 35px 80px;
 }
-
