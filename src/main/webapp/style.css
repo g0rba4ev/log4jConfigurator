@@ -2,31 +2,18 @@ BODY {
     margin: 5px;
     background: #808080;
 }
-DIV {
-    outline: 1px solid #000; /* Чёрная рамка */
-}
-TABLE {
-    width: 100%; /* Ширина таблицы */
-    border-collapse: collapse; /* Убираем двойные линии между ячейками */
-}
-TD, TH {
-    padding: 3px; /* Поля вокруг содержимого таблицы */
-    border: 1px solid black; /* Параметры рамки */
-}
-TH {
-    background: #b0e0e6; /* Цвет фона */
-}
-#className {
-    width: calc(100% - 65px);
-}
-
-#EditButton {
-    width: 40px;
-    margin: 5px 5px 5px 0px;
-    display: inline-block;
-}
-
 .boldBorder {
     outline: 2px solid #000; /* Чёрная рамка */
+}
+.tableGrid {
+    display: grid;
+    grid-template-columns: 2fr 6fr 6fr 1fr;
+}
+.centerTextDiv {
+    text-align: center;
+}
+#mainMenu {
+    display: grid;
+    grid-template-columns: 1fr 80px 35px 80px;
 }
 

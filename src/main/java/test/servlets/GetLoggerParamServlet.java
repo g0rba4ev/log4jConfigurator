@@ -18,7 +18,7 @@ import java.util.Properties;
 
 @WebServlet("/getLoggerParam")
 public class GetLoggerParamServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
@@ -49,25 +49,34 @@ public class GetLoggerParamServlet extends HttpServlet {
         String temp = log4jProp.getProperty(loggerKey);
         if(temp == null){
             //TODO replace with json that'll be placed in the table on site
-            return "[\"Logger_is_not_register\"]";
+            return "[{\"Error\": \"Logger is not registered\"}]";
         }
         // the field logInfoStr contains the level of the logger and the list of applications comma-separated
         String logInfoStr = temp.replaceAll(" ", "");
         String[] logInfoArr = logInfoStr.split(",");
         String[] appendersArr = Arrays.copyOfRange(logInfoArr, 1, logInfoArr.length);
+        //get logger additivity and check - is it empty (default)
+        String additivity = log4jProp.getProperty(additivityKey);
+        if (additivity == null)
+            additivity = "true (default)";
 
+
+        ArrayNode rootNode = mapper.createArrayNode();
         ObjectNode loggerNode = mapper.createObjectNode();
         ArrayNode appendersNode = mapper.createArrayNode();
 
-        loggerNode.put("loggerName", className);
-        loggerNode.put("level", logInfoArr[0]);
+        loggerNode.put("LoggerName", className);
+        loggerNode.put("Additivity", additivity);
+        loggerNode.put("Level", logInfoArr[0]);
         for(String s : appendersArr)
             appendersNode.add(s);
-        loggerNode.put("appenders", appendersNode);
+        loggerNode.put("Appenders", appendersNode);
+
+        rootNode.add(loggerNode);
 
         String json;
         try {
-            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(loggerNode);
+            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
         } catch (IOException ioe) {
             // TODO handle this exception
             json = "";
