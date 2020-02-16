@@ -1,9 +1,9 @@
 BODY {
     margin: 5px;
-    background: #808080;
+    background: #888;
 }
 .boldBorder {
-    outline: 2px solid #000; /* Чёрная рамка */
+    outline: 2px solid #444; /* Чёрная рамка */
 }
 .tableGrid {
     display: grid;
@@ -11,6 +11,24 @@ BODY {
 }
 .centerTextDiv {
     text-align: center;
+}
+.collapsible {
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    text-align: left;
+}
+.active,
+.collapsible:hover {
+    background-color: #444;
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
 }
 #mainMenu {
     display: grid;

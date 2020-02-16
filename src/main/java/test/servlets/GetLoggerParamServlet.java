@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 @WebServlet("/getLoggerParam")
@@ -22,7 +23,7 @@ public class GetLoggerParamServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        String json = getLoggerProperties(req.getParameter("className"));
+        String json = createJSONLoggerProp(req.getParameter("loggerName"));
 
         resp.getWriter().print(json);
     }
@@ -30,20 +31,17 @@ public class GetLoggerParamServlet extends HttpServlet {
 
     /**
      *
-     * @param className name of logger (usually match with class name)
+     * @param loggerName name of logger (usually match with class name)
      * @return JSON with properties of this logger
      */
-    private String getLoggerProperties(final String className) {
-        //for building json
-        ObjectMapper mapper = new ObjectMapper();
-
+    private String createJSONLoggerProp(final String loggerName) {
         //get properties from log4j.properties
         String pathToLog4jProperties = "d:\\temp\\Java\\log4j.properties"; // TODO add setting this path from outside
         Properties log4jProp = readLog4jProperties(pathToLog4jProperties);
 
         // fields ends with "Key" is a keys for properties in log4j.properties
-        String loggerKey = "log4j.logger." + className;
-        String additivityKey = "log4j.additivity." + className;
+        String loggerKey = "log4j.logger." + loggerName;
+        String additivityKey = "log4j.additivity." + loggerName;
 
         //check - is exist a logger with that name
         String temp = log4jProp.getProperty(loggerKey);
@@ -60,19 +58,34 @@ public class GetLoggerParamServlet extends HttpServlet {
         if (additivity == null)
             additivity = "true (default)";
 
+        //for building json
+        ObjectMapper mapper = new ObjectMapper();
 
         ArrayNode rootNode = mapper.createArrayNode();
         ObjectNode loggerNode = mapper.createObjectNode();
-        ArrayNode appendersNode = mapper.createArrayNode();
+        ArrayNode appendersNamesNode = mapper.createArrayNode();
 
-        loggerNode.put("LoggerName", className);
+        loggerNode.put("LoggerName", loggerName);
         loggerNode.put("Additivity", additivity);
         loggerNode.put("Level", logInfoArr[0]);
         for(String s : appendersArr)
-            appendersNode.add(s);
-        loggerNode.put("Appenders", appendersNode);
+            appendersNamesNode.add(s);
+        loggerNode.put("Appenders", appendersNamesNode);
 
         rootNode.add(loggerNode);
+
+        for (String appenderName : appendersArr){
+            ObjectNode appenderNode = mapper.createObjectNode();
+            String appenderKey = "log4j.appender." + appenderName;
+            for(String s : log4jProp.stringPropertyNames()) {
+                if(s.equals(appenderKey)){
+                    appenderNode.put(appenderName, log4jProp.getProperty(s));
+                }else if(s.contains(appenderKey)){
+                    appenderNode.put(s.replace(appenderKey+".", ""), log4jProp.getProperty(s));
+                }
+            }
+            rootNode.add(appenderNode);
+        }
 
         String json;
         try {
