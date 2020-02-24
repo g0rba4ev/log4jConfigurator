@@ -11,7 +11,7 @@
 
   <body>
     <div id="mainMenu" class="boldBorder">
-        <input id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;">
+        <input id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;)">
         <input id="editButton" type="button" value="Edit" onclick="showLogger($('#loggerName').val())">
         <div class="centerTextDiv">OR</div>
         <input id="addNewLoggerBtn" type="button" value="Add new">

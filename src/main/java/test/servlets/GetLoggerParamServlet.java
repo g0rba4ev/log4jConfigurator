@@ -31,7 +31,7 @@ public class GetLoggerParamServlet extends HttpServlet {
 
 
     /**
-     *
+     * creates the JSON with properties of this logger
      * @param loggerName name of logger (usually match with class name)
      * @return JSON with properties of this logger
      */
@@ -78,7 +78,8 @@ public class GetLoggerParamServlet extends HttpServlet {
         for (String appenderName : appendersArr){
             ObjectNode appenderNode = mapper.createObjectNode();
             String appenderKey = "log4j.appender." + appenderName;
-            appenderNode.put(appenderName, log4jProp.getProperty(appenderKey));
+            appenderNode.put("Name", appenderName);
+            appenderNode.put("Appender", log4jProp.getProperty(appenderKey));
             for(String s : log4jProp.stringPropertyNames()) {
                 if(s.contains(appenderKey) && !(s.equals(appenderKey))){
                     appenderNode.put(s.replace(appenderKey+".", ""), log4jProp.getProperty(s));
