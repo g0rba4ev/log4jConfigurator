@@ -2,7 +2,7 @@ package test.servlets;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
-import test.classes.ClassScanner;
+import test.util.ClassScanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
