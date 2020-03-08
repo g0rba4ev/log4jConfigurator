@@ -12,13 +12,14 @@ import java.util.*;
 public class PropertyReader {
 
 
-
+    static Boolean debug;
     static Logger rootLogger;
     static Map<String, Logger> loggerMap = new HashMap<>();
     static Map<String, Appender> appenderMap = new HashMap<>();
 
     static final String PATH_TO_LOG4J_PROPERTIES = "d:\\temp\\Java\\log4j.properties";
 
+    static final String          DEBUG_PREFIX = "log4j.debug";
     static final String         LOGGER_PREFIX = "log4j.logger.";
     static final String     ADDITIVITY_PREFIX = "log4j.additivity.";
     static final String    ROOT_LOGGER_PREFIX = "log4j.rootLogger";
@@ -47,6 +48,9 @@ public class PropertyReader {
         appenderMap.clear();
 
         Properties props = readLog4jProperties(PATH_TO_LOG4J_PROPERTIES);
+
+        String debugValue = props.getProperty(DEBUG_PREFIX);
+        debug = debugValue.equalsIgnoreCase("true");
 
         rootLogger = parseRootLogger(props);
         for (String key : props.stringPropertyNames()) {

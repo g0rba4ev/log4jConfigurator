@@ -23,7 +23,7 @@ public class ClassScanner {
 
         class LocalFileVisitor extends SimpleFileVisitor<Path> {
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 String fileName = file.getFileName().toString();
                 if(fileName.endsWith(".jar")){
                     classNames.addAll(ClassScanner.getClassNamesFromJar(file.toString()));
