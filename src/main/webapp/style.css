@@ -3,16 +3,20 @@ BODY {
     background: #303030;
     color: white;
 }
+
 .boldBorder {
     outline: 2px solid #444; /* Чёрная рамка */
 }
+
 .tableGrid {
     display: grid;
-    grid-template-columns: 2fr 6fr 6fr 1fr;
+    grid-template-columns: 2fr 6fr 1fr;
 }
+
 .centerTextDiv {
     text-align: center;
 }
+
 .collapsible {
     background-color: #202020;
     color: aliceblue;
@@ -20,26 +24,31 @@ BODY {
     padding: 5px;
     text-align: left;
 }
+
 .active,
 .collapsible:hover {
     background-color: #38444c;
 }
+
 .content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     background-color: #f1f1f1;
 }
+
 #mainMenu {
     display: grid;
     grid-template-columns: 1fr 80px 35px 80px;
 }
+
 input {
     padding: 5px;
     background-color: lightgray;
     border: thin solid;
     color: black;
 }
+
 button {
     position: absolute;
     right: 5px;
@@ -50,14 +59,37 @@ button {
     text-align: center;
     font-size: 14px;
 }
+
 #editButton,
 #addNewLoggerBtn,
-#updateBtn {
+.editPropBtn {
     background-color: #94a0a8;
 }
+
+.updPropBtn {
+    background-color: #F96A44;
+}
+
 #editButton:hover,
 #addNewLoggerBtn:hover,
-#updateBtn:hover,
+.updPropBtn:hover,
+.editPropBtn:hover,
 button:hover {
     background-color: #25a223;
+}
+
+.boldText {
+    font-weight:bold;
+}
+
+.paramWasChanged {
+    background-color: #FAFA8A;
+}
+
+#editButton:active,
+#addNewLoggerBtn:active,
+.updPropBtn:active,
+.editPropBtn:active,
+button:active {
+    padding: calc(.25em + 1px) .5em calc(.25em - 1px);
 }

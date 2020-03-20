@@ -23,7 +23,7 @@ public class Logger {
     private Boolean additivity = true;
 
     /**
-     * set of appenders attached to the logger
+     * set of appenders aliases attached to the logger
      */
     private Set<Appender> appenderSet;
 

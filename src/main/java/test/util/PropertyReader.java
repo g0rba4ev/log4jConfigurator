@@ -11,7 +11,9 @@ import java.util.*;
 
 public class PropertyReader {
 
-
+    /**
+     * value of parameter "log4j.debug"
+     */
     static Boolean debug;
     static Logger rootLogger;
     static Map<String, Logger> loggerMap = new HashMap<>();
@@ -24,6 +26,10 @@ public class PropertyReader {
     static final String     ADDITIVITY_PREFIX = "log4j.additivity.";
     static final String    ROOT_LOGGER_PREFIX = "log4j.rootLogger";
     static final String       APPENDER_PREFIX = "log4j.appender.";
+
+    public static Map<String, Appender> getAppenderMap() {
+        return appenderMap;
+    }
 
     public static Map<String, Logger> getLoggerMap() {
         return loggerMap;
@@ -61,7 +67,6 @@ public class PropertyReader {
                 loggerMap.put(logger.getName(), logger);
             }
         }
-
     }
 
     private static Logger parseRootLogger(Properties props) {
@@ -89,7 +94,7 @@ public class PropertyReader {
         String value = props.getProperty(key);
         StringTokenizer st = new StringTokenizer(value, ",");
 
-        if(value.equals(""))
+        if( value.equals("") )
             return logger;
 
         if ( !value.startsWith(",") ){
@@ -102,13 +107,13 @@ public class PropertyReader {
         }
 
         Appender appender;
-        String appenderName;
+        String appenderAlias;
         while(st.hasMoreTokens()) {
-            appenderName = st.nextToken().trim();
-            if(appenderName.equals(","))
+            appenderAlias = st.nextToken().trim();
+            if(appenderAlias.equals(","))
                 continue;
 
-            appender = parseAppender(props, appenderName);
+            appender = parseAppender(props, appenderAlias);
             if(appender != null) {
                 logger.addAppender(appender);
             }
@@ -135,21 +140,21 @@ public class PropertyReader {
     }
 
     /**
-     * Parse appender with {@code appenderName}
+     * Parse appender with {@code appenderAlias}
      * @param props properties from log4j.properties
-     * @param appenderName appender name
+     * @param appenderAlias appender name
      * @return parsed Appender
      */
-    private static Appender parseAppender(Properties props, String appenderName) {
+    private static Appender parseAppender(Properties props, String appenderAlias) {
         // if appender was previously initialized
-        if (appenderMap.containsKey(appenderName)) {
-            return appenderMap.get(appenderName);
+        if (appenderMap.containsKey(appenderAlias)) {
+            return appenderMap.get(appenderAlias);
         }
         // Appender was not previously initialized.
-        String appenderType = props.getProperty(APPENDER_PREFIX + appenderName);
-        Appender appender = new Appender(appenderName, appenderType);
+        String appenderType = props.getProperty(APPENDER_PREFIX + appenderAlias);
+        Appender appender = new Appender(appenderAlias, appenderType);
 
-        String prefix = APPENDER_PREFIX + appenderName + ".";
+        String prefix = APPENDER_PREFIX + appenderAlias + ".";
         int len = prefix.length();
 
         for (String key : props.stringPropertyNames()){
@@ -159,7 +164,7 @@ public class PropertyReader {
             }
         }
 
-        appenderMap.put(appender.getName(), appender);
+        appenderMap.put(appender.getAlias(), appender);
         return appender;
     }
 

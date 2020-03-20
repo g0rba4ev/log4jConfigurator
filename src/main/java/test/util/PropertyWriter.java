@@ -18,10 +18,6 @@ public class PropertyWriter {
      */
     private static Set<Appender> writtenAppenders = new HashSet<>();
 
-    public static void main(String[] args) {
-        PropertyReader.readProps();
-        saveProps();
-    }
     /**
      * save log4j configuration to {@link PropertyReader#PATH_TO_LOG4J_PROPERTIES} file
      */
@@ -67,7 +63,7 @@ public class PropertyWriter {
         if (!appenderSet.isEmpty()) {
             for (Appender a : appenderSet){
                 valueBuilder.append(", ");
-                valueBuilder.append(a.getName());
+                valueBuilder.append(a.getAlias());
             }
         }
         String value = valueBuilder.toString();
@@ -113,9 +109,9 @@ public class PropertyWriter {
             return;
 
         bw.newLine();
-        bw.write(PropertyReader.APPENDER_PREFIX + appender.getName() + "=" + appender.getAppenderType());
+        bw.write(PropertyReader.APPENDER_PREFIX + appender.getAlias() + "=" + appender.getAppenderType());
 
-        String prefix = PropertyReader.APPENDER_PREFIX + appender.getName() + ".";
+        String prefix = PropertyReader.APPENDER_PREFIX + appender.getAlias() + ".";
         Map<String, String> propsMap = appender.getPropsMap();
         for (String s : propsMap.keySet()) {
             String key = prefix + s; // TODO add property ordering

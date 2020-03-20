@@ -4,21 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Appender {
-    private String name;
+
+    private String alias;
     private String appenderType; // e.g. org.apache.log4j.DailyRollingFileAppender
     private Map<String, String> propsMap = new HashMap<>();
 
-    public Appender(String name, String appenderType) {
-        this.name = name;
+    public Appender(String alias, String appenderType) {
+        this.alias = alias;
         this.appenderType = appenderType;
     }
 
-    public String getName() {
-        return name;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getAppenderType() {

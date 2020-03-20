@@ -34,10 +34,9 @@ public class GetLoggerParamServlet extends HttpServlet {
      */
     private String createJSONLoggerProp(final String loggerName) {
 
-        PropertyReader.readProps();
         //check - is exist a logger with that name
         Logger logger;
-        if(loggerName.equals("rootLogger")){
+        if(loggerName.equalsIgnoreCase("rootLogger")){
             logger = PropertyReader.getRootLogger();
         } else {
             logger = PropertyReader.getLoggerMap().get(loggerName);
@@ -54,7 +53,7 @@ public class GetLoggerParamServlet extends HttpServlet {
 
         rootNode.add(loggerNode);
 
-        loggerNode.put("LoggerName", logger.getName());
+        loggerNode.put("Name", logger.getName());
         loggerNode.put("Additivity", logger.getAdditivity().toString());
         loggerNode.put("Level",logger.getLevel());
         loggerNode.put("Appenders", appendersNamesNode);
@@ -62,7 +61,7 @@ public class GetLoggerParamServlet extends HttpServlet {
         for (Appender appender: logger.getAppenderSet()) {
             ObjectNode appenderNode = mapper.createObjectNode();
 
-            appenderNode.put("Name", appender.getName());
+            appenderNode.put("Alias", appender.getAlias());
             appenderNode.put("Appender", appender.getAppenderType());
 
             Map<String, String> appenderPropsMap = appender.getPropsMap();
@@ -70,7 +69,7 @@ public class GetLoggerParamServlet extends HttpServlet {
                 appenderNode.put(key, appenderPropsMap.get(key));
             }
 
-            appendersNamesNode.add( appender.getName() );
+            appendersNamesNode.add( appender.getAlias());
             rootNode.add(appenderNode);
         }
 
@@ -83,4 +82,5 @@ public class GetLoggerParamServlet extends HttpServlet {
         }
         return json;
     }
+
 }
