@@ -60,13 +60,15 @@ public class GetLoggerParamServlet extends HttpServlet {
 
         for (Appender appender: logger.getAppenderSet()) {
             ObjectNode appenderNode = mapper.createObjectNode();
+            ObjectNode appenderPropsNode = mapper.createObjectNode();
 
             appenderNode.put("Alias", appender.getAlias());
             appenderNode.put("Appender", appender.getAppenderType());
+            appenderNode.put("appenderProps", appenderPropsNode);
 
             Map<String, String> appenderPropsMap = appender.getPropsMap();
             for(String key : appender.getPropsMap().keySet()){
-                appenderNode.put(key, appenderPropsMap.get(key));
+                appenderPropsNode.put(key, appenderPropsMap.get(key));
             }
 
             appendersNamesNode.add( appender.getAlias());

@@ -19,82 +19,17 @@ function showLogger(loggerName) {
         success : function (respJSON) {
             renderByJSON(respJSON);
             if(Object.keys(respJSON[0])[0] !== "Error"){
-                let saveChangesBtn = document.createElement("button");
-                saveChangesBtn.innerText="SAVE CHANGES";
-                saveChangesBtn.id = "saveChangesBtn";
-                $('#tables').append(saveChangesBtn);
+                // show this button
+                $('#saveChangesBtn').removeAttr("hidden");
             }
         }
     });
 }
 
 /**
- * function add the tables with object's properties to #tables <div>
- *
- * NOTE: table there is a <div> with grids, not the table
- * @param JSON an object by the contents of which a table will be created
+ * event listener to show/hide table by click to tableHead div
  */
-function renderByJSON(JSON){
-    let tables = $('#tables'); // get link to the #tables div
-    tables.empty(); // clean div #tables (from previous results)
-    for (let i=0; i<=JSON.length-1; i++){
-        renderTable(tables, JSON[i]);
-    }
-}
-
-/**
- * function add the APPENDER or LOGGER table to #tables
- *
- * NOTE: table there is a <div> with grids, not the table
- * @param tables <div> to which the table-div will be added
- * @param object  from json to be converted to table
- */
-function renderTable(tables, object) {
-    //create the head of the table by clicking on which the table will appear
-    let tableHead = document.createElement('div');
-    tableHead.classList.add('collapsible');
-    //add event listener to show/hide table by click to tableHead div
-    tableHead.addEventListener('click', collapse);
-
-    let firstKey = Object.keys(object)[0];
-    if(firstKey === "Error"){
-        tableHead.innerText = "Error: " + object["Error"]; // error
-        tables.append(tableHead);
-        return;
-    } else if (firstKey === "Name") {
-        tableHead.innerText = "Logger: " + object["Name"]; // logger name
-        tableHead.setAttribute("data-logger-or-appender", "logger");
-        tableHead.setAttribute("data-logger-name", object["Name"])
-    } else if (firstKey === "Alias") {
-        tableHead.innerText = "Appender: " + object["Alias"]; // appender alias
-        tableHead.setAttribute("data-logger-or-appender", "appender");
-        tableHead.setAttribute("data-appender-alias", object["Alias"])
-    }
-
-    // create table
-    let table = document.createElement('div');
-    table.classList.add('tableGrid', 'content'); // display: grid
-    for (let key in object) {
-        let c1 = document.createElement("input"); // c = cell  in the row
-        let c2 = document.createElement("input");
-        let c3 =  document.createElement("input");
-        c1.readOnly = true;
-        c1.value = key;
-        c2.readOnly = true;
-        c2.value = object[key];
-        c3.setAttribute("type", "button");
-        c3.value = "EDIT";
-        c3.classList.add("editPropBtn");
-        table.append(c1, c2, c3);
-    }
-    tables.append(tableHead);
-    tables.append(table);
-}
-
-/**
- * to show/hide table by click to tableHead div
- */
-function collapse() {
+$(document).on('click', '.collapsible', function () {
     this.classList.toggle('active');
     let content = this.nextElementSibling;
     if(content.style.maxHeight) {
@@ -102,8 +37,7 @@ function collapse() {
     } else {
         content.style.maxHeight = content.scrollHeight + 'px';
     }
-}
-
+});
 
 /**
  * event listener for ".editPropBtn"
@@ -148,9 +82,7 @@ $(document).on('click', '.updPropBtn', function () {
         },
         success : function (response) {
             valueElem.value = response;
-            valueElem.classList.toggle("boldText");
-            keyElem.classList.toggle("boldText");
-            //change colour for value that was changed
+            //change colour and font-width for value that was changed
             keyElem.classList.add("paramWasChanged");
             valueElem.classList.add("paramWasChanged");
             //make value field immutable
@@ -164,7 +96,7 @@ $(document).on('click', '.updPropBtn', function () {
 });
 
 $(document).on('click', '#saveChangesBtn', function () {
-    let loggerTableHeadElem = this.parentNode.firstChild; // parentNode -> tables ->(child) tableHead
+    let loggerTableHeadElem = $('#tables').firstChild; // parentNode -> tables ->(child) tableHead
     let loggerName = loggerTableHeadElem.getAttribute("data-logger-name");
     $.ajax({
         url: "./saveChanges",
@@ -174,3 +106,10 @@ $(document).on('click', '#saveChangesBtn', function () {
         }
     })
 });
+
+$(document).on('click', '#readPropsBtn', function () {
+    $.ajax({
+        url: "./readProps"
+    })
+});
+
