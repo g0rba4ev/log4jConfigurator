@@ -31,8 +31,7 @@ function renderByJSON(JSON){
  * @returns {*}
  */
 function renderLoggerTable(object) {
-    let template = $("#loggerTpl").html();
-    return Mustache.render(template, object);
+    return Mustache.render(LOGGER_TPL, object);
 }
 
 /**
@@ -59,6 +58,47 @@ function renderAppenderTable(appenderObj) {
     });
 
     // doing render
-    let template = $("#appenderTpl").html();
-    return Mustache.render(template, objForMustache);
+    return Mustache.render(APPENDER_TPL, objForMustache);
 }
+
+// logger table html template for Mustache
+const LOGGER_TPL =  '<div class="collapsible" data-logger-or-appender="logger" data-logger-name="{{Name}}">Logger: {{Name}}</div>' +
+                    '<div class="content">' +
+                        '<div class="tableGrid">' +
+                            '<input readonly value="Name">' +
+                            '<input readonly value="{{Name}}">' +
+                            '<input type="button" value="EDIT" class="editPropBtn">' +
+                            '<input readonly value="Additivity">' +
+                            '<input readonly value="{{Additivity}}">' +
+                            '<input type="button" value="EDIT" class="editPropBtn">' +
+                            '<input readonly value="Level">' +
+                            '<input readonly value="{{Level}}">' +
+                            '<input type="button" value="EDIT" class="editPropBtn">' +
+                        '</div>' +
+                        '<div class="attachedAppendersGrid">' +
+                            '<input readonly value="ATTACHED APPENDERS:" class="tableHead">' +
+                            '<input type="button" value="Attach New" id="attachAppenderBtn">' +
+                            '{{#Appenders}}' +
+                                '<input readonly value="{{.}}">' +
+                                '<input type="button" value="REMOVE" class="removeAppenderBtn">' +
+                            '{{/Appenders}}' +
+                        '</div>' +
+                    '</div>';
+
+// appender table html template for Mustache
+const APPENDER_TPL =    '<div class="collapsible" data-logger-or-appender="appender" data-appender-alias="{{Alias}}">Appender: {{Alias}}</div>' +
+                        '<div class="content">' +
+                            '<div class="tableGrid">' +
+                                '<input readonly value="Alias">' +
+                                '<input readonly value="{{Alias}}">' +
+                                '<input type="button" value="EDIT" class="editPropBtn">' +
+                                '<input readonly value="Appender">' +
+                                '<input readonly value="{{Appender}}">' +
+                                '<input type="button" value="EDIT" class="editPropBtn">' +
+                                '{{#appenderProps}}' +
+                                    '<input readonly value="{{key}}">' +
+                                    '<input readonly value="{{value}}">' +
+                                    '<input type="button" value="EDIT" class="editPropBtn">' +
+                                '{{/appenderProps}}' +
+                            '</div>' +
+                        '</div>';

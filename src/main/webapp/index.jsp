@@ -36,50 +36,5 @@
 
     <button id="saveChangesBtn" hidden="true">SAVE CHANGES</button>
 
-    <script id="loggerTpl" type="x-tmpl-mustache">
-        <div class="collapsible" data-logger-or-appender="logger" data-logger-name="{{Name}}">Logger: {{Name}}</div>
-        <div class="content">
-          <div class="tableGrid">
-            <input readonly value="Name">
-            <input readonly value="{{Name}}">
-            <input type="button" value="EDIT" class="editPropBtn">
-            <input readonly value="Additivity">
-            <input readonly value="{{Additivity}}">
-            <input type="button" value="EDIT" class="editPropBtn">
-            <input readonly value="Level">
-            <input readonly value="{{Level}}">
-            <input type="button" value="EDIT" class="editPropBtn">
-          </div>
-          <div class="attachedAppendersGrid">
-              <input readonly value="ATTACHED APPENDERS:" class="tableHead">
-              <input type="button" value="Attach New" id="attachAppenderBtn">
-            {{#Appenders}}
-              <input readonly value="{{.}}">
-              <input type="button" value="REMOVE" class="removeAppenderBtn">
-            {{/Appenders}}
-           </div>
-        </div>
-    </script>
-
-    <script id="appenderTpl" type="x-tmpl-mustache">
-        <div class="collapsible" data-logger-or-appender="appender" data-appender-alias="{{Alias}}">Appender: {{Alias}}</div>
-        <div class="content">
-          <div class="tableGrid">
-            <input readonly value="Alias">
-            <input readonly value="{{Alias}}">
-            <input type="button" value="EDIT" class="editPropBtn">
-            <input readonly value="Appender">
-            <input readonly value="{{Appender}}">
-            <input type="button" value="EDIT" class="editPropBtn">
-            {{#appenderProps}}
-              <input readonly value="{{key}}">
-              <input readonly value="{{value}}">
-              <input type="button" value="EDIT" class="editPropBtn">
-            {{/appenderProps}}
-          </div>
-
-        </div>
-    </script>
-
   </body>
 </html>
