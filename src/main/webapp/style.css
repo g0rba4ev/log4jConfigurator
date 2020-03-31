@@ -4,15 +4,7 @@ BODY {
     color: white;
 }
 
-.boldBorder {
-    outline: 2px solid #444; /* Чёрная рамка */
-}
-
-.boldText {
-    font-weight:bold;
-}
-
-/* for collapsible content*/
+/* for collapsible content */
 .collapsible {
     background-color: #202020;
     color: aliceblue;
@@ -20,17 +12,17 @@ BODY {
     padding: 5px;
     text-align: left;
 }
-/* for collapsible content*/
+/* for collapsible content */
 .active,
 .collapsible:hover {
     background-color: #38444c;
 }
-/* for collapsible content*/
+/* for collapsible content */
 .content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
-    background-color: #f1f1f1;
+    background-color: #303030;
 }
 
 #mainMenu {
@@ -43,15 +35,49 @@ BODY {
     grid-template-columns: 1fr 80px;
 }
 
-.tableGrid {
+/* for buttons DETACH (from logger) and DELETE APPENDER */
+.table {
+    position: relative;
+}
+/* for buttons DETACH (from logger) and DELETE APPENDER */
+.delete-appender-btn {
+    position: absolute;
+    right: 15px;
+    top: 3px;
+}
+/* for buttons DETACH (from logger) and DELETE APPENDER */
+.detach-appender-btn {
+    position: absolute;
+    right: 180px;
+    top: 3px;
+}
+
+.table-grid {
     display: grid;
     grid-template-columns: 2fr 6fr 65px;
 }
 
-.attachedAppendersGrid {
+.attached-appenders-grid {
     border: 6px solid orange;
     display: grid;
     grid-template-columns: 6fr 80px;
+}
+
+.btn-description {
+    padding: 5px;
+    background-color: lightgray;
+    border: thin solid;
+    color: black;
+    font-size: smaller;
+}
+
+.param-was-changed {
+    background-color: #FAFA8A;
+    font-weight:bold;
+}
+
+.requires-update{
+    background-color: #ea6e6e;
 }
 
 input {
@@ -59,14 +85,6 @@ input {
     background-color: lightgray;
     border: thin solid;
     color: black;
-}
-
-.btnDescription {
-    padding: 5px;
-    background-color: lightgray;
-    border: thin solid;
-    color: black;
-    font-size: smaller;
 }
 
 button {
@@ -80,28 +98,19 @@ button {
     font-size: 14px;
 }
 
-.updPropBtn {
-    background-color: #F96A44;
-}
-
-.paramWasChanged {
-    background-color: #FAFA8A;
-    font-weight:bold;
-}
-
-input[id$=Btn],
-input[class$=Btn]{
+input[id$=btn],
+input[class$=btn]{
     background-color: #94a0a8;
 }
 
-input[id$=Btn]:hover,
-input[class$=Btn]:hover,
+input[id$=btn]:hover,
+input[class$=btn]:hover,
 button:hover {
     background-color: #25a223;
 }
 
-input[id$=Btn]:active,
-input[class$=Btn]:active,
+input[id$=btn]:active,
+input[class$=btn]:active,
 button:active {
     padding: calc(.25em + 1px) .5em calc(.25em - 1px);
 }

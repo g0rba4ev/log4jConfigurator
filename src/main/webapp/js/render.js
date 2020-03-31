@@ -62,43 +62,41 @@ function renderAppenderTable(appenderObj) {
 }
 
 // logger table html template for Mustache
-const LOGGER_TPL =  '<div class="collapsible" data-logger-or-appender="logger" data-logger-name="{{Name}}">Logger: {{Name}}</div>' +
-                    '<div class="content">' +
-                        '<div class="tableGrid">' +
-                            '<input readonly value="Name">' +
-                            '<input readonly value="{{Name}}">' +
-                            '<input type="button" value="EDIT" class="editPropBtn">' +
-                            '<input readonly value="Additivity">' +
-                            '<input readonly value="{{Additivity}}">' +
-                            '<input type="button" value="EDIT" class="editPropBtn">' +
-                            '<input readonly value="Level">' +
-                            '<input readonly value="{{Level}}">' +
-                            '<input type="button" value="EDIT" class="editPropBtn">' +
-                        '</div>' +
-                        '<div class="attachedAppendersGrid">' +
-                            '<input readonly value="ATTACHED APPENDERS:" class="tableHead">' +
-                            '<input type="button" value="Attach New" id="attachAppenderBtn">' +
-                            '{{#Appenders}}' +
-                                '<input readonly value="{{.}}">' +
-                                '<input type="button" value="REMOVE" class="removeAppenderBtn">' +
-                            '{{/Appenders}}' +
+const LOGGER_TPL =  '<div class="table" id="{{Name}}" data-table-type="logger">' +
+                        '<div class="collapsible">Logger: {{Name}}</div>' +
+                        '<div class="content">' +
+                            '<div class="table-grid">' +
+                                '<input readonly value="Name">' +
+                                '<input readonly value="{{Name}}">' +
+                                '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                                '<input readonly value="Additivity">' +
+                                '<input readonly value="{{Additivity}}">' +
+                                '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                                '<input readonly value="Level">' +
+                                '<input readonly value="{{Level}}">' +
+                                '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                            '</div>' +
                         '</div>' +
                     '</div>';
 
 // appender table html template for Mustache
-const APPENDER_TPL =    '<div class="collapsible" data-logger-or-appender="appender" data-appender-alias="{{Alias}}">Appender: {{Alias}}</div>' +
-                        '<div class="content">' +
-                            '<div class="tableGrid">' +
-                                '<input readonly value="Alias">' +
-                                '<input readonly value="{{Alias}}">' +
-                                '<input type="button" value="EDIT" class="editPropBtn">' +
-                                '<input readonly value="Appender">' +
-                                '<input readonly value="{{Appender}}">' +
-                                '<input type="button" value="EDIT" class="editPropBtn">' +
-                                '{{#appenderProps}}' +
-                                    '<input readonly value="{{key}}">' +
-                                    '<input readonly value="{{value}}">' +
-                                    '<input type="button" value="EDIT" class="editPropBtn">' +
-                                '{{/appenderProps}}' +
+const APPENDER_TPL =    '<div class="table" id="{{Alias}}" data-table-type="appender">' +
+                            '<input class="detach-appender-btn" type="button" value="DETACH">' +
+                            '<input class="delete-appender-btn" type="button" value="DELETE APPENDER">' +
+                            '<div class="collapsible">Appender: {{Alias}}</div>' +
+                            '<div class="content">' +
+                                '<div class="table-grid">' +
+                                    '<input readonly value="Alias">' +
+                                    '<input readonly value="{{Alias}}">' +
+                                    '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                                    '<input readonly value="Appender">' +
+                                    '<input readonly value="{{Appender}}">' +
+                                    '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                                    '{{#appenderProps}}' +
+                                        '<input readonly value="{{key}}">' +
+                                        '<input readonly value="{{value}}">' +
+                                        '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                                    '{{/appenderProps}}' +
+                                '</div>' +
                             '</div>' +
                         '</div>';

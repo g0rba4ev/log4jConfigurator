@@ -1,40 +1,42 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Log4j Configurator</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="jquery-ui.css">
-    <script type="text/javascript" src="js/libs/jquery.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
-    <script type="text/javascript" src="js/libs/mustache.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/render.js"></script>
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/jquery-ui.js"></script>
+    <script src="js/libs/mustache.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/render.js"></script>
   </head>
 
   <body>
-    <div id="mainMenuHeader" class="collapsible boldBorder" align="center">
+    <div class="collapsible" id="mainMenuHeader">
       MAIN MENU
     </div>
-    <div id="mainMenu" class="content">
-      <input id="readPropsBtn" type="button" value="Read properties">
-      <div class="btnDescription">
+    <div class="content" id="mainMenu">
+      <input id="read-props-btn" type="button" value="Read properties">
+      <div class="btn-description">
         < - Before editing you should read properties from file
       </div>
     </div>
 
-    <div id="chooseLogger" class="boldBorder">
-        <input id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;)">
-        <input id="editBtn" type="button" value="Edit" onclick="showLogger($('#loggerName').val())">
+    <div id="chooseLogger">
+      <input id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;)">
+      <input id="edit-btn" type="button" value="Edit" onclick="showLogger($('#loggerName').val())">
     </div>
 
-    <br/>
+    <br>
 
     <div id="tables">
 
       <%--place for tables rendered by js--%>
     </div>
 
-    <button id="saveChangesBtn" hidden="true">SAVE CHANGES</button>
+    <button id="save-changes-btn" hidden>SAVE CHANGES</button>
 
   </body>
 </html>

@@ -185,4 +185,17 @@ public class PropertyReader {
         }
         return props;
     }
+
+    /**
+     * get logger by name
+     * @param loggerName name of required logger
+     * @return {@link PropertyReader#rootLogger} or logger by name from {@link PropertyReader#loggerMap}
+     */
+    public static Logger getLoggerByName(String loggerName) {
+        if ( loggerName.equalsIgnoreCase("rootLogger") ) {
+            return rootLogger;
+        } else {
+            return loggerMap.get(loggerName);
+        }
+    }
 }

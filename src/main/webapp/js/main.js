@@ -20,7 +20,7 @@ function showLogger(loggerName) {
             renderByJSON(respJSON);
             if(Object.keys(respJSON[0])[0] !== "Error"){
                 // show this button
-                $('#saveChangesBtn').removeAttr("hidden");
+                $('#save-changes-btn').show();
             }
         }
     });
@@ -40,64 +40,57 @@ $(document).on('click', '.collapsible', function () {
 });
 
 /**
- * event listener for ".editPropBtn"
+ * event listener for ".edit-prop-btn"
  * makes the field with property value mutable
  * toggles button
  */
-$(document).on('click', '.editPropBtn', function () {
-    let btnElem = this;
-    let valueElem = this.previousSibling;
+$(document).on('click', '.edit-prop-btn', function () {
+    let $btnElem = $( this );
+    let $valueElem = $btnElem.prev();
     //make value field mutable
-    valueElem.removeAttribute("readonly");
+    $valueElem.removeAttr("readonly");
+    //set focus on <input> valueElem
+    $valueElem.focus();
+    $valueElem.addClass("requires-update");
     //toggle button
-    btnElem.classList.remove("editPropBtn");
-    btnElem.value = "UPDATE";
-    btnElem.classList.add("updPropBtn");
+    $btnElem.removeClass("edit-prop-btn").addClass("upd-prop-btn");
+    $btnElem.val("UPDATE");
 });
 
 /**
- * event listener for ".updPropBtn"
+ * event listener for ".upd-prop-btn"
  * to send ajax for updating required parameter
  */
-$(document).on('click', '.updPropBtn', function () {
-    let tableHeadElem = this.parentNode.previousSibling;
-    let btnElem = this;
-    let valueElem = this.previousSibling;
-    let keyElem = valueElem.previousSibling;
+$(document).on('click', '.upd-prop-btn', function () {
+    let $table = $( this ).closest('.table');
+    let $btnElem = $( this );
+    let $valueElem = $btnElem.prev();
+    let $keyElem = $valueElem.prev();
 
-    let objForChange = tableHeadElem.getAttribute("data-logger-or-appender");
-    let objName;
-    if ( objForChange === "logger") {
-        objName = tableHeadElem.getAttribute("data-logger-name");
-    } else {
-        objName = tableHeadElem.getAttribute("data-appender-alias");
-    }
     $.ajax({
         url : "./updParam",
         data : {
-            objForChange : objForChange,
-            objName : objName,
-            key: keyElem.value,
-            newValue: valueElem.value
+            objForChange: $table.attr("data-table-type"),
+            objName: $table.attr("id"),
+            key: $keyElem.val(),
+            newValue: $valueElem.val()
         },
         success : function (response) {
-            valueElem.value = response;
+            $valueElem.val(response);
             //change colour and font-width for value that was changed
-            keyElem.classList.add("paramWasChanged");
-            valueElem.classList.add("paramWasChanged");
+            $keyElem.addClass("param-was-changed");
+            $valueElem.removeClass("requires-update").addClass("param-was-changed");
             //make value field immutable
-            valueElem.setAttribute("readonly", "true");
+            $valueElem.attr("readonly", "true");
             //toggle button
-            btnElem.classList.remove("updPropBtn");
-            btnElem.value = "EDIT";
-            btnElem.classList.add("editPropBtn");
+            $btnElem.removeClass("upd-prop-btn").addClass("edit-prop-btn");
+            $btnElem.val("EDIT");
         }
     });
 });
 
-$(document).on('click', '#saveChangesBtn', function () {
-    let loggerTableHeadElem = $('#tables').firstChild; // parentNode -> tables ->(child) tableHead
-    let loggerName = loggerTableHeadElem.getAttribute("data-logger-name");
+$(document).on('click', '#save-changes-btn', function () {
+    let loggerName = $('[data-table-type = logger]').attr("id");
     $.ajax({
         url: "./saveChanges",
         success: function () {
@@ -107,9 +100,52 @@ $(document).on('click', '#saveChangesBtn', function () {
     })
 });
 
-$(document).on('click', '#readPropsBtn', function () {
+$(document).on('click', '#read-props-btn', function () {
     $.ajax({
         url: "./readProps"
     })
 });
 
+$(document).on('click', '.detach-appender-btn', function () {
+    let $appenderTable = $( this ).closest('.table');
+    let appenderAlias = $appenderTable.attr("id");
+    let loggerName = $('[data-table-type = logger]').attr("id");
+
+    $.ajax({
+        url: "./detachAppender",
+        data : {
+            loggerName: loggerName,
+            appenderAlias: appenderAlias
+        },
+        success: function (json) {
+            if (json.status === "Success") {
+                // delete appender table
+                $appenderTable.remove();
+                alert("Success: " + json.message);
+            } else {
+                alert("Error: " + json.message);
+            }
+        }
+    })
+});
+
+$(document).on('click', '.delete-appender-btn', function () {
+    let $appenderTable = $( this ).closest('.table');
+    let appenderAlias = $appenderTable.attr("id");
+
+    $.ajax({
+        url: "./deleteAppender",
+        data : {
+            appenderAlias: appenderAlias
+        },
+        success: function (json) {
+            if (json.status === "Success") {
+                // delete appender table
+                $appenderTable.remove();
+                alert("Success: " + json.message);
+            } else {
+                alert("Error: " + json.message);
+            }
+        }
+    })
+});
