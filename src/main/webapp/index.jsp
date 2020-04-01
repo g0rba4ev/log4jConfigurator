@@ -18,9 +18,9 @@
       MAIN MENU
     </div>
     <div class="content" id="mainMenu">
-      <input id="read-props-btn" type="button" value="Read properties">
+      <input id="read-config-btn" type="button" value="Read configuration">
       <div class="btn-description">
-        < - Before editing you should read properties from file
+        ← Before editing you should read configuration from file with log4j properties
       </div>
     </div>
 

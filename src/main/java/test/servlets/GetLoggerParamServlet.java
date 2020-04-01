@@ -17,6 +17,7 @@ import test.util.PropertyReader;
 
 @WebServlet("/getLoggerParam")
 public class GetLoggerParamServlet extends HttpServlet {
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
@@ -26,7 +27,6 @@ public class GetLoggerParamServlet extends HttpServlet {
         resp.getWriter().print(json);
     }
 
-
     /**
      * creates the JSON with properties of this logger
      * @param loggerName name of logger (usually match with class name)
@@ -34,14 +34,8 @@ public class GetLoggerParamServlet extends HttpServlet {
      */
     private String createJSONLoggerProp(final String loggerName) {
 
+        Logger logger = PropertyReader.getLoggerByName(loggerName);
         //check - is exist a logger with that name
-        Logger logger;
-        if(loggerName.equalsIgnoreCase("rootLogger")){
-            logger = PropertyReader.getRootLogger();
-        } else {
-            logger = PropertyReader.getLoggerMap().get(loggerName);
-
-        }
         if(logger == null)
             return "[{\"Error\": \"Logger is not registered\"}]";
         //for building json
@@ -49,14 +43,12 @@ public class GetLoggerParamServlet extends HttpServlet {
 
         ArrayNode rootNode = mapper.createArrayNode();
         ObjectNode loggerNode = mapper.createObjectNode();
-        ArrayNode appendersNamesNode = mapper.createArrayNode();
 
         rootNode.add(loggerNode);
 
         loggerNode.put("Name", logger.getName());
         loggerNode.put("Additivity", logger.getAdditivity().toString());
         loggerNode.put("Level",logger.getLevel());
-        loggerNode.put("Appenders", appendersNamesNode);
 
         for (Appender appender: logger.getAppenderSet()) {
             ObjectNode appenderNode = mapper.createObjectNode();
@@ -71,7 +63,6 @@ public class GetLoggerParamServlet extends HttpServlet {
                 appenderPropsNode.put(key, appenderPropsMap.get(key));
             }
 
-            appendersNamesNode.add( appender.getAlias());
             rootNode.add(appenderNode);
         }
 

@@ -17,13 +17,6 @@ import java.util.Set;
 @WebServlet("/updParam")
 public class UpdParamServlet extends HttpServlet {
 
-    public static void main(String[] args) {
-        PropertyReader.readProps();
-        UpdParamServlet a = new UpdParamServlet();
-        a.changeLogger("org.hsqldb.Expression", "Additivity", "true");
-        PropertyWriter.saveProps();
-    }
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String objForChange = req.getParameter("objForChange");

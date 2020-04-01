@@ -89,23 +89,41 @@ $(document).on('click', '.upd-prop-btn', function () {
     });
 });
 
+/**
+ * event listener for "#save-changes-btn"
+ * to send ajax for saving all properties from model to
+ * file (with log4j properties) in your project
+ */
 $(document).on('click', '#save-changes-btn', function () {
     let loggerName = $('[data-table-type = logger]').attr("id");
     $.ajax({
         url: "./saveChanges",
-        success: function () {
+        success: function (data, textStatus, jqXHR) {
+            alert( jqXHR.getResponseHeader("Message"));
             let url = "./";
             $(location).attr('href',url);
         }
     })
 });
 
-$(document).on('click', '#read-props-btn', function () {
+/**
+ * event listener for "#read-config-btn"
+ * to send ajax for reading configuration from file (with log4j properties)
+ * of your project and put them to model
+ */
+$(document).on('click', '#read-config-btn', function () {
     $.ajax({
-        url: "./readProps"
+        url: "./readConfig",
+        success: function (data, textStatus, jqXHR) {
+            alert( jqXHR.getResponseHeader("Message"));
+        }
     })
 });
 
+/**
+ * event listener for ".detach-appender-btn"
+ * to send ajax for detaching appender from logger
+ */
 $(document).on('click', '.detach-appender-btn', function () {
     let $appenderTable = $( this ).closest('.table');
     let appenderAlias = $appenderTable.attr("id");
@@ -117,18 +135,24 @@ $(document).on('click', '.detach-appender-btn', function () {
             loggerName: loggerName,
             appenderAlias: appenderAlias
         },
-        success: function (json) {
-            if (json.status === "Success") {
-                // delete appender table
+        statusCode: {
+            200: function(jqXHR) {
+                // delete appender table from page
                 $appenderTable.remove();
-                alert("Success: " + json.message);
-            } else {
-                alert("Error: " + json.message);
+                alert( "Success: " + jqXHR.getResponseHeader("Message") );
+            },
+            400: function(jqXHR) {
+                alert( "Error: " + jqXHR.getResponseHeader("Message") );
             }
         }
     })
 });
 
+/**
+ * event listener for ".delete-appender-btn"
+ * to send ajax for complete removal appender:
+ * appender will be deleted from model and from all loggers to which it is attached
+*/
 $(document).on('click', '.delete-appender-btn', function () {
     let $appenderTable = $( this ).closest('.table');
     let appenderAlias = $appenderTable.attr("id");
@@ -138,13 +162,14 @@ $(document).on('click', '.delete-appender-btn', function () {
         data : {
             appenderAlias: appenderAlias
         },
-        success: function (json) {
-            if (json.status === "Success") {
-                // delete appender table
+        statusCode: {
+            200: function(jqXHR) {
+                // delete appender table from page
                 $appenderTable.remove();
-                alert("Success: " + json.message);
-            } else {
-                alert("Error: " + json.message);
+                alert( "Success: " + jqXHR.getResponseHeader("Message") );
+            },
+            400: function(jqXHR) {
+                alert( "Error: " + jqXHR.getResponseHeader("Message") );
             }
         }
     })

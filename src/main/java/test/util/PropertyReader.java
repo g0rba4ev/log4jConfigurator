@@ -44,12 +44,12 @@ public class PropertyReader {
     }
 
     /**
-     * read properties from {@link PropertyReader#PATH_TO_LOG4J_PROPERTIES} and
+     * read configuration (properties) from {@link PropertyReader#PATH_TO_LOG4J_PROPERTIES} and
      * fill {@link PropertyReader#loggerMap} and {@link PropertyReader#appenderMap}
      *
      * (analog doConfigure(...) in log4j)
      */
-    public static void readProps() {
+    public static void readConfig() {
         loggerMap.clear();
         appenderMap.clear();
 

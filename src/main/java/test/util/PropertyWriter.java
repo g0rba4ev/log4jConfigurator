@@ -14,14 +14,14 @@ public class PropertyWriter {
 
     /**
      * field stores set of appenders that already written
-     * during {@link PropertyWriter#saveProps()}
+     * during {@link PropertyWriter#saveConfig()}
      */
     private static Set<Appender> writtenAppenders = new HashSet<>();
 
     /**
      * save log4j configuration to {@link PropertyReader#PATH_TO_LOG4J_PROPERTIES} file
      */
-    public static void saveProps() {
+    public static void saveConfig() {
         PropertyWriter.writtenAppenders.clear();
 
         String fileName = PropertyReader.PATH_TO_LOG4J_PROPERTIES;
