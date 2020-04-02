@@ -67,13 +67,16 @@ $(document).on('click', '.upd-prop-btn', function () {
     let $valueElem = $btnElem.prev();
     let $keyElem = $valueElem.prev();
 
+    let key = $keyElem.val();
+    let newValue = $valueElem.val();
+
     $.ajax({
         url : "./updParam",
         data : {
             objForChange: $table.attr("data-table-type"),
             objName: $table.attr("id"),
-            key: $keyElem.val(),
-            newValue: $valueElem.val()
+            key: key,
+            newValue: newValue
         },
         success : function (response) {
             $valueElem.val(response);
@@ -85,8 +88,77 @@ $(document).on('click', '.upd-prop-btn', function () {
             //toggle button
             $btnElem.removeClass("upd-prop-btn").addClass("edit-prop-btn");
             $btnElem.val("EDIT");
+
+            // update logger name or appender alias on page if if required
+            if (key === "Alias")
+                updAppenderAliasInTable($table, newValue);
+            if (key === "Name")
+                updLoggerNameInTable($table, newValue);
         }
     });
+});
+
+/**
+ * event listener for ".delete-prop-btn"
+ * to send ajax for deleting APPENDER property
+ */
+$(document).on('click', '.add-new-prop-btn', function () {
+    let $appenderTable = $( this ).closest('.table');
+    let $btn = $( this );
+    let $valueField = $btn.prev();
+    let $keyField = $valueField.prev();
+
+    let appenderAlias = $btn.closest('.table').attr("id");
+    let key = $keyField.val();
+    let value = $valueField.val();
+
+    $.ajax({
+        url: "./addAppenderProp",
+        data : {
+            appenderAlias: appenderAlias,
+            propertyKey : key,
+            propertyValue: value
+        },
+        success: function () {
+            let row =   '<input readonly value="' + key + '">' +
+                            '<input readonly value="' + value + '">' +
+                            '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                            '<input class="delete-prop-btn" type="button" value="X">';
+            // add the row (with property) to the table on page
+            $appenderTable.find('.appender-props-grid').append( row );
+            // clear fields
+            $keyField.val("");
+            $valueField.val("");
+        }
+    })
+});
+
+/**
+ * event listener for ".delete-prop-btn"
+ * to send ajax for deleting APPENDER property
+ */
+$(document).on('click', '.delete-prop-btn', function () {
+    let $delBtn = $( this );
+    let $updBtn = $delBtn.prev();
+    let $valueField = $updBtn.prev();
+    let $keyField = $valueField.prev();
+
+    let appenderAlias = $delBtn.closest('.table').attr("id");
+
+    $.ajax({
+        url: "./deleteAppenderProp",
+        data : {
+            appenderAlias: appenderAlias,
+            propertyKey : $keyField.val()
+        },
+        success: function () {
+            // remove the row (with property) from table on page
+            $keyField.remove();
+            $valueField.remove();
+            $updBtn.remove();
+            $delBtn.remove();
+        }
+    })
 });
 
 /**
@@ -115,6 +187,8 @@ $(document).on('click', '#read-config-btn', function () {
     $.ajax({
         url: "./readConfig",
         success: function (data, textStatus, jqXHR) {
+            // clear tables (may contain non valid data)
+            $('#tables').empty();
             alert( jqXHR.getResponseHeader("Message"));
         }
     })
@@ -163,10 +237,10 @@ $(document).on('click', '.delete-appender-btn', function () {
             appenderAlias: appenderAlias
         },
         statusCode: {
-            200: function(jqXHR) {
+            200: function(data, textStatus, jqXHR) {
+                alert( "Success: " + jqXHR.getResponseHeader("Message") );
                 // delete appender table from page
                 $appenderTable.remove();
-                alert( "Success: " + jqXHR.getResponseHeader("Message") );
             },
             400: function(jqXHR) {
                 alert( "Error: " + jqXHR.getResponseHeader("Message") );
@@ -174,3 +248,49 @@ $(document).on('click', '.delete-appender-btn', function () {
         }
     })
 });
+
+/**
+ * event listener for ".delete-logger-btn"
+ * to send ajax for complete removal logger:
+ * logger will be deleted from model
+ */
+$(document).on('click', '.delete-logger-btn', function () {
+    let $loggerTable = $( this ).closest('.table');
+
+    $.ajax({
+        url: "./deleteLogger",
+        data : {
+            loggerName: $loggerTable.attr("id")
+        },
+        statusCode: {
+            200: function(data, textStatus, jqXHR) {
+                alert( "Success: " + jqXHR.getResponseHeader("Message") );
+                // clear tables div
+                $('#tables').empty();
+            },
+            400: function(jqXHR) {
+                alert( "Error: " + jqXHR.getResponseHeader("Message") );
+            }
+        }
+    })
+});
+
+/**
+ * update appender alias in two places of $table
+ * @param $table
+ * @param newValue new value of alias
+ */
+function updAppenderAliasInTable($table, newValue) {
+    $table.attr("id", newValue);
+    $table.children(".collapsible").html("Appender: " + newValue);
+}
+
+/**
+ * update logger name in two places of $table
+ * @param $table
+ * @param newValue new value of logger name
+ */
+function updLoggerNameInTable($table, newValue) {
+    $table.attr("id", newValue);
+    $table.children(".collapsible").html("Logger: " + newValue);
+}

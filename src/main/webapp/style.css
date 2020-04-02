@@ -39,13 +39,14 @@ BODY {
 .table {
     position: relative;
 }
-/* for buttons DETACH (from logger) and DELETE APPENDER */
-.delete-appender-btn {
+
+.delete-appender-btn,
+.delete-logger-btn {
     position: absolute;
     right: 15px;
     top: 3px;
 }
-/* for buttons DETACH (from logger) and DELETE APPENDER */
+
 .detach-appender-btn {
     position: absolute;
     right: 180px;
@@ -54,13 +55,19 @@ BODY {
 
 .table-grid {
     display: grid;
-    grid-template-columns: 2fr 6fr 65px;
+    grid-template-columns: 200px 6fr 65px;
 }
 
-.attached-appenders-grid {
-    border: 6px solid orange;
+.appender-props-grid {
     display: grid;
-    grid-template-columns: 6fr 80px;
+    grid-template-columns: 200px 6fr 65px 20px;
+    border: solid 3px #fcefa1
+}
+
+.add-new-prop-grid {
+    display: grid;
+    grid-template-columns: 200px 6fr 150px 20px;
+    border: solid 3px #fcefa1
 }
 
 .btn-description {

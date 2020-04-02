@@ -14,7 +14,6 @@ import java.util.Map;
 public class DeleteAppenderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        resp.setContentType("application/json");
 
         String appenderAlias = req.getParameter("appenderAlias");
         Map<String, Appender> appenderMap = PropertyReader.getAppenderMap();
@@ -34,4 +33,5 @@ public class DeleteAppenderServlet extends HttpServlet {
         }
 
     }
+
 }

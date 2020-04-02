@@ -41,4 +41,5 @@ public class AutoCompleteServlet extends HttpServlet {
 
         resp.getWriter().write(mapper.writeValueAsString(suggestionArrNode));
     }
+
 }
