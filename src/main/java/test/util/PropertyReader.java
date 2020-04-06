@@ -146,26 +146,27 @@ public class PropertyReader {
      * @return parsed Appender
      */
     private static Appender parseAppender(Properties props, String appenderAlias) {
-        // if appender was previously initialized
         if (appenderMap.containsKey(appenderAlias)) {
+            // Appender was previously initialized
             return appenderMap.get(appenderAlias);
-        }
-        // Appender was not previously initialized.
-        String appenderType = props.getProperty(APPENDER_PREFIX + appenderAlias);
-        Appender appender = new Appender(appenderAlias, appenderType);
+        } else {
+            // Appender was not previously initialized.
+            String appenderType = props.getProperty(APPENDER_PREFIX + appenderAlias);
+            Appender appender = new Appender(appenderAlias, appenderType);
 
-        String prefix = APPENDER_PREFIX + appenderAlias + ".";
-        int len = prefix.length();
+            String prefix = APPENDER_PREFIX + appenderAlias + ".";
+            int len = prefix.length();
 
-        for (String key : props.stringPropertyNames()){
-            // handle only properties that start with the desired prefix.
-            if (key.startsWith(prefix)) {
-                appender.addProperty(key.substring(len), props.getProperty(key));
+            for (String key : props.stringPropertyNames()){
+                // handle only properties that start with the desired prefix.
+                if (key.startsWith(prefix)) {
+                    appender.addProperty(key.substring(len), props.getProperty(key));
+                }
             }
-        }
 
-        appenderMap.put(appender.getAlias(), appender);
-        return appender;
+            appenderMap.put(appender.getAlias(), appender);
+            return appender;
+        }
     }
 
     /**

@@ -1,23 +1,18 @@
 package test.servlets;
 
 import test.models.Appender;
-import test.models.Logger;
 import test.util.PropertyReader;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 @WebServlet("/addAppenderProp")
 public class AddAppenderPropServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 
         String appenderAlias = req.getParameter("appenderAlias");
         String key = req.getParameter("propertyKey");

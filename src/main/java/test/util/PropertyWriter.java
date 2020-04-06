@@ -92,7 +92,6 @@ public class PropertyWriter {
         Set<Appender> appenderSet = logger.getAppenderSet();
         if (!appenderSet.isEmpty()) {
             for (Appender a : appenderSet){
-                bw.newLine(); // empty string before each appender
                 writeAppender(bw, a);
             }
         }
@@ -109,6 +108,7 @@ public class PropertyWriter {
             return;
 
         bw.newLine();
+        bw.newLine(); // empty string before each appender
         bw.write(PropertyReader.APPENDER_PREFIX + appender.getAlias() + "=" + appender.getAppenderType());
 
         String prefix = PropertyReader.APPENDER_PREFIX + appender.getAlias() + ".";
