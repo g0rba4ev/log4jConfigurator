@@ -35,9 +35,17 @@ $(document).on('click', '.collapsible', function () {
     if(content.style.maxHeight) {
         content.style.maxHeight = null;
     } else {
-        content.style.maxHeight = content.scrollHeight + 'px';
+        setMaxHeightEqualScrollHeight(content);
     }
 });
+
+/**
+ * set element property maxHeight based on scrollHeight of
+ * @param element native DOM element
+ */
+function setMaxHeightEqualScrollHeight(element) {
+    element.style.maxHeight = element.scrollHeight + 'px';
+}
 
 /**
  * event listener for ".edit-prop-btn"
@@ -99,10 +107,11 @@ $(document).on('click', '.upd-prop-btn', function () {
 });
 
 /**
- * event listener for ".delete-prop-btn"
- * to send ajax for deleting APPENDER property
+ * event listener for ".add-new-prop-btn"
+ * to send ajax for adding new APPENDER property
  */
 $(document).on('click', '.add-new-prop-btn', function () {
+    let $content = $( this ).closest('.content');
     let $appenderTable = $( this ).closest('.table');
     let $btn = $( this );
     let $valueField = $btn.prev();
@@ -120,16 +129,21 @@ $(document).on('click', '.add-new-prop-btn', function () {
             propertyValue: value
         },
         success: function () {
-            let row =   '<input readonly value="' + key + '">' +
-                            '<input readonly value="' + value + '">' +
-                            '<input class="edit-prop-btn" type="button" value="EDIT">' +
-                            '<input class="delete-prop-btn" type="button" value="X">';
+            let row =   '<input class="param-was-changed" readonly value="' + key + '">' +
+                        '<input class="param-was-changed" readonly value="' + value + '">' +
+                        '<input class="edit-prop-btn" type="button" value="EDIT">' +
+                        '<input class="delete-prop-btn" type="button" value="X">';
             // add the row (with property) to the table on page
             $appenderTable.find('.appender-props-grid').append( row );
             // clear fields
             $keyField.val("");
             $valueField.val("");
-        }
+            // change content height
+            setMaxHeightEqualScrollHeight( $content[0] );
+        },
+        error: function(jqXHR) {
+            alert( "Error: " + jqXHR.getResponseHeader("Message") );
+        },
     })
 });
 
@@ -138,6 +152,7 @@ $(document).on('click', '.add-new-prop-btn', function () {
  * to send ajax for deleting APPENDER property
  */
 $(document).on('click', '.delete-prop-btn', function () {
+    let $content = $( this ).closest('.content');
     let $delBtn = $( this );
     let $updBtn = $delBtn.prev();
     let $valueField = $updBtn.prev();
@@ -157,6 +172,8 @@ $(document).on('click', '.delete-prop-btn', function () {
             $valueField.remove();
             $updBtn.remove();
             $delBtn.remove();
+            // change content height
+            setMaxHeightEqualScrollHeight( $content[0] );
         }
     })
 });
@@ -167,7 +184,6 @@ $(document).on('click', '.delete-prop-btn', function () {
  * file (with log4j properties) in your project
  */
 $(document).on('click', '#save-changes-btn', function () {
-    let loggerName = $('[data-table-type = logger]').attr("id");
     $.ajax({
         url: "./saveChanges",
         success: function (data, textStatus, jqXHR) {
@@ -210,7 +226,7 @@ $(document).on('click', '.detach-appender-btn', function () {
             appenderAlias: appenderAlias
         },
         statusCode: {
-            200: function(jqXHR) {
+            200: function(data, textStatus, jqXHR) {
                 // delete appender table from page
                 $appenderTable.remove();
                 alert( "Success: " + jqXHR.getResponseHeader("Message") );

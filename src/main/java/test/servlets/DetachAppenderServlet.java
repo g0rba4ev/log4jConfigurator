@@ -17,8 +17,6 @@ public class DetachAppenderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.setContentType("application/json");
-
         String loggerName = req.getParameter("loggerName");
         String detachAppenderAlias = req.getParameter("appenderAlias");
 
