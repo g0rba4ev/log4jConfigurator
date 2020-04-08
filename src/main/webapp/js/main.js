@@ -205,6 +205,7 @@ $(document).on('click', '#read-config-btn', function () {
         success: function (data, textStatus, jqXHR) {
             // clear tables (may contain non valid data)
             $('#tables').empty();
+            $('#save-changes-btn').hide();
             alert( jqXHR.getResponseHeader("Message"));
         }
     })

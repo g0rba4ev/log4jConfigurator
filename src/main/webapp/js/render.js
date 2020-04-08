@@ -63,7 +63,12 @@ function renderAppenderTable(appenderObj) {
 
 // logger table html template for Mustache
 const LOGGER_TPL =  '<div class="table" id="{{Name}}" data-table-type="logger">' +
-                        '<input class="delete-logger-btn" type="button" value="DELETE LOGGER">' +
+                        '<div class="logger-buttons">' +
+                            '<input class="attach-existing-btn" type="button" value="+Existing" title="Attach existing appender">' +
+                            '<input class="attach-copy-btn" type="button" value="+Copy" title="Attach copy of existing appender">' +
+                            '<input class="attach-new-btn" type="button" value="+New" title="Attach new appender">' +
+                            '<input class="delete-logger-btn" type="button" value="DELETE LOGGER">' +
+                        '</div>' +
                         '<div class="collapsible">Logger: {{Name}}</div>' +
                         '<div class="content">' +
                             '<div class="table-grid">' +

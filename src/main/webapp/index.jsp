@@ -11,6 +11,7 @@
     <script src="js/libs/mustache.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/render.js"></script>
+    <script src="js/attachAppender.js"></script>
   </head>
 
   <body>
@@ -32,11 +33,40 @@
     <br>
 
     <div id="tables">
-
       <%--place for tables rendered by js--%>
     </div>
-
     <button id="save-changes-btn" hidden>SAVE CHANGES</button>
+
+    <div id="attach-existing-appender-dialog" hidden>
+      <div class="attach-appender-grid">
+        <input readonly value="Logger:">
+        <input class="logger-name" readonly value="">
+        <input readonly value="Attaching appender:">
+        <input class="existing-appender-alias" placeholder="Enter alias of existing appender">
+      </div>
+    </div>
+
+    <div id="attach-copy-appender-dialog" hidden>
+      <div class="attach-appender-grid">
+        <input readonly value="Logger:">
+        <input class="logger-name" readonly value="">
+        <input readonly value="Create copy of:">
+        <input class="existing-appender-alias" placeholder="Enter alias of existing appender">
+        <input readonly value="With alias:">
+        <input class="new-appender-alias" placeholder="Enter alias for new appender">
+      </div>
+    </div>
+
+    <div id="attach-new-appender-dialog" hidden>
+      <div class="attach-appender-grid">
+        <input readonly value="Logger:">
+        <input class="logger-name" readonly value="">
+        <input readonly value="Appender alias:">
+        <input class="new-appender-alias" placeholder="Enter alias for new appender">
+        <input readonly value="Appender type:">
+        <input class="new-appender-type" placeholder="Enter type of new appender">
+      </div>
+    </div>
 
   </body>
 </html>

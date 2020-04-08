@@ -40,8 +40,13 @@ BODY {
     position: relative;
 }
 
-.delete-appender-btn,
-.delete-logger-btn {
+.logger-buttons {
+    position: absolute;
+    right: 15px;
+    top: 3px;
+}
+
+.delete-appender-btn {
     position: absolute;
     right: 15px;
     top: 3px;
@@ -70,6 +75,11 @@ BODY {
     border: solid 3px #fcefa1
 }
 
+.attach-appender-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
 .btn-description {
     padding: 5px;
     background-color: lightgray;
@@ -83,7 +93,7 @@ BODY {
     font-weight:bold;
 }
 
-.requires-update{
+.requires-update {
     background-color: #ea6e6e;
 }
 
@@ -106,7 +116,7 @@ button {
 }
 
 input[id$=btn],
-input[class$=btn]{
+input[class$=btn] {
     background-color: #94a0a8;
 }
 
