@@ -131,3 +131,8 @@ input[class$=btn]:active,
 button:active {
     padding: calc(.25em + 1px) .5em calc(.25em - 1px);
 }
+
+/* for correct autocomplete in jQuery dialog widget */
+ul.ui-autocomplete {
+    z-index: 1100; /* I'm sure 1100 is a little overkill, but I just wanted to play it safe (c) */
+}

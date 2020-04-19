@@ -26,7 +26,7 @@
     </div>
 
     <div id="chooseLogger">
-      <input id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;)">
+      <input class="logger-name" id="loggerName" placeholder="Enter logger name (for example, &quot;package.folder.existing.logger&quot;)">
       <input id="edit-btn" type="button" value="Edit" onclick="showLogger($('#loggerName').val())">
     </div>
 

@@ -1,7 +1,10 @@
 // to show suggestions for autocomplete
 $(document).ready(function(){
-    $("#loggerName").autocomplete({
-        source: 'getClassNames'
+    $('.logger-name').autocomplete({
+        source: "getLoggerSuggestions"
+    });
+    $('.existing-appender-alias').autocomplete({
+        source: "getAppenderSuggestions"
     });
 });
 
